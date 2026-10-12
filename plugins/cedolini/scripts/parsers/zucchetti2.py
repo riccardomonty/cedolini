@@ -600,10 +600,17 @@ def _parse_tfr(ced: Cedolino, lines: list[dict], full_text: str):
             if i + 1 < len(lines):
                 nums = _extract_nums(lines[i + 1]["text"])
                 vals = [_pdn(n) for n in nums]
-                if len(vals) >= 2:
-                    ced.tfr.tfr_annuo = vals[0]
-                    ced.tfr.tfr_a_fondo_pensione = vals[1]
-                elif len(vals) == 1:
+                vals_len = len(vals)
+                if vals_len == 5:
+                    ced.tfr.fondo_tfr_31_12_ap = vals[0]
+                    ced.tfr.tfr_annuo = vals[3]                    
+                    ced.tfr.tfr_a_fondo_pensione = vals[4]
+                elif vals_len == 4:
+                    ced.tfr.fondo_tfr_31_12_ap = vals[0]
+                    ced.tfr.tfr_annuo = vals[3]                    
+                    ced.tfr.tfr_a_fondo_pensione = ZERO
+                elif vals_len == 1:
+                    ced.tfr.fondo_tfr_31_12_ap = vals[0]
                     ced.tfr.tfr_annuo = vals[0]
             return
 
